@@ -70,6 +70,16 @@ export default class extends Sandbox {
 
         });
 
+        this.onMessage("attachProp", (client, message) => {           
+
+            const str = client.sessionId + "@@" + message;
+          
+            this.broadcast("attachProp", str);
+
+            console.log(message);
+
+        });
+
 
     }
     

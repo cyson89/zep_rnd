@@ -1,0 +1,41 @@
+fileFormatVersion: 2
+guid: fd79f80b982b2464496d9d2f2814e809
+importerOverride: ZEPETO.Script.Compiler:ZEPETO.Script:TypescriptAssetImporter
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: -1123457745, guid: 54cf806323ffe4418a4ce4cc63fe6b9d, type: 3}
+  isAssemblyDeclarations: 0
+  assembly: 
+  generateAllTypes: 1
+  types: []
+  generateWrapper: 0
+  overrideWrapperTypes: 0
+  wrapperTypes: []
+  WrapperFilters: []
+  wrapperOutputDirectory: Generated
+  compiledResult: '{"source":"\"use strict\";\r\nObject.defineProperty(exports, \"__esModule\",
+    { value: true });\r\nconst UnityEngine_1 = require(\"UnityEngine\");\r\nconst
+    ZEPETO_Character_Controller_1 = require(\"ZEPETO.Character.Controller\");\r\nconst
+    ZEPETO_Script_1 = require(\"ZEPETO.Script\");\r\nconst ClientStarter_1 = require(\"../../ZepetoScripts/Multiplay/ClientStarter\");\r\nclass
+    PropInteractionManager extends ZEPETO_Script_1.ZepetoScriptBehaviour {\r\n   
+    Start() {\r\n        this.zepetoCamera = this.zepetoPlayer.transform.GetChild(2).GetChild(0).GetChild(0).GetComponent($typeof(UnityEngine_1.Camera));\r\n       
+    this.clientStarter = this.clientStarterGameObject.GetComponent($typeof(ClientStarter_1.default));\r\n       
+    this.buttonInteraction.onClick.AddListener(() => {\r\n            this.clientStarter.SendAttachPropMessage(this.propIndex);\r\n       
+    });\r\n    }\r\n    OnTriggerEnter(collider) {\r\n        if (collider.name ==
+    ZEPETO_Character_Controller_1.ZepetoPlayers.instance.LocalPlayer.zepetoPlayer.character.name)
+    {\r\n            this.showButton = true;\r\n            this.buttonInteraction.gameObject.SetActive(true);\r\n       
+    }\r\n    }\r\n    OnTriggerExit(collider) {\r\n        if (collider.name == ZEPETO_Character_Controller_1.ZepetoPlayers.instance.LocalPlayer.zepetoPlayer.character.name)
+    {\r\n            this.showButton = false;\r\n            this.buttonInteraction.gameObject.SetActive(false);\r\n       
+    }\r\n    }\r\n    Update() {\r\n        // update screen space interaction button
+    position\r\n        if (this.showButton) {\r\n            this.viewportPosition
+    = this.zepetoCamera.WorldToViewportPoint(this.gameObject.transform.position);\r\n           
+    this.buttonInteraction.transform.position = new UnityEngine_1.Vector3(this.canvasInteraction.renderingDisplaySize.x
+    * this.viewportPosition.x, this.canvasInteraction.renderingDisplaySize.y * this.viewportPosition.y,
+    0);\r\n        }\r\n    }\r\n}\r\nexports.default = PropInteractionManager;\r\n//#
+    sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiUHJvcEludGVyYWN0aW9uTWFuYWdlci5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIlByb3BJbnRlcmFjdGlvbk1hbmFnZXIudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7QUFBQSw2Q0FBNEU7QUFFNUUsNkVBQTREO0FBQzVELGlEQUFxRDtBQUNyRCwrRUFBd0U7QUFFeEUsTUFBcUIsc0JBQXVCLFNBQVEscUNBQXFCO0lBWXJFLEtBQUs7UUFFRCxJQUFJLENBQUMsWUFBWSxHQUFHLElBQUksQ0FBQyxZQUFZLENBQUMsU0FBUyxDQUFDLFFBQVEsQ0FBQyxDQUFDLENBQUMsQ0FBQyxRQUFRLENBQUMsQ0FBQyxDQUFDLENBQUMsUUFBUSxDQUFDLENBQUMsQ0FBQyxDQUFDLFlBQVksU0FBQyxvQkFBTSxFQUFHLENBQUM7UUFFM0csSUFBSSxDQUFDLGFBQWEsR0FBRyxJQUFJLENBQUMsdUJBQXVCLENBQUMsWUFBWSxTQUFDLHVCQUFhLEVBQUcsQ0FBQztRQUdoRixJQUFJLENBQUMsaUJBQWlCLENBQUMsT0FBTyxDQUFDLFdBQVcsQ0FBQyxHQUFHLEVBQUU7WUFFeEMsSUFBSSxDQUFDLGFBQWEsQ0FBQyxxQkFBcUIsQ0FBQyxJQUFJLENBQUMsU0FBUyxDQUFDLENBQUM7UUFHakUsQ0FBQyxDQUFDLENBQUM7SUFHUCxDQUFDO0lBRUQsY0FBYyxDQUFDLFFBQWtCO1FBRTdCLElBQUksUUFBUSxDQUFDLElBQUksSUFBSSwyQ0FBYSxDQUFDLFFBQVEsQ0FBQyxXQUFXLENBQUMsWUFBWSxDQUFDLFNBQVMsQ0FBQyxJQUFJLEVBQUU7WUFDN0UsSUFBSSxDQUFDLFVBQVUsR0FBRyxJQUFJLENBQUM7WUFDdkIsSUFBSSxDQUFDLGlCQUFpQixDQUFDLFVBQVUsQ0FBQyxTQUFTLENBQUMsSUFBSSxDQUFDLENBQUM7U0FDekQ7SUFDTCxDQUFDO0lBRUQsYUFBYSxDQUFDLFFBQWtCO1FBRTVCLElBQUksUUFBUSxDQUFDLElBQUksSUFBSSwyQ0FBYSxDQUFDLFFBQVEsQ0FBQyxXQUFXLENBQUMsWUFBWSxDQUFDLFNBQVMsQ0FBQyxJQUFJLEVBQUU7WUFDN0UsSUFBSSxDQUFDLFVBQVUsR0FBRyxLQUFLLENBQUM7WUFDeEIsSUFBSSxDQUFDLGlCQUFpQixDQUFDLFVBQVUsQ0FBQyxTQUFTLENBQUMsS0FBSyxDQUFDLENBQUM7U0FDMUQ7SUFDTCxDQUFDO0lBR0QsTUFBTTtRQUVGLGtEQUFrRDtRQUNsRCxJQUFJLElBQUksQ0FBQyxVQUFVLEVBQUU7WUFDakIsSUFBSSxDQUFDLGdCQUFnQixHQUFHLElBQUksQ0FBQyxZQUFZLENBQUMsb0JBQW9CLENBQUMsSUFBSSxDQUFDLFVBQVUsQ0FBQyxTQUFTLENBQUMsUUFBUSxDQUFDLENBQUM7WUFDbkcsSUFBSSxDQUFDLGlCQUFpQixDQUFDLFNBQVMsQ0FBQyxRQUFRLEdBQUcsSUFBSSxxQkFBTyxDQUFDLElBQUksQ0FBQyxpQkFBaUIsQ0FBQyxvQkFBb0IsQ0FBQyxDQUFDLEdBQUcsSUFBSSxDQUFDLGdCQUFnQixDQUFDLENBQUMsRUFDM0gsSUFBSSxDQUFDLGlCQUFpQixDQUFDLG9CQUFvQixDQUFDLENBQUMsR0FBRyxJQUFJLENBQUMsZ0JBQWdCLENBQUMsQ0FBQyxFQUN2RSxDQUFDLENBQUMsQ0FBQztTQUNWO0lBQ0wsQ0FBQztDQUVKO0FBekRELHlDQXlEQyJ9","assetPath":"Assets/MyAssets/Script/PropInteractionManager.ts","manifest":{"properties":[{"assembly":"UnityEngine.UIModule","name":"canvasInteraction","type":"UnityEngine.Canvas","isArray":false,"enumKeys":[],"enumValues":[],"attributes":[]},{"assembly":"UnityEngine.UI","name":"buttonInteraction","type":"UnityEngine.UI.Button","isArray":false,"enumKeys":[],"enumValues":[],"attributes":[]},{"assembly":"UnityEngine.CoreModule","name":"clientStarterGameObject","type":"UnityEngine.GameObject","isArray":false,"enumKeys":[],"enumValues":[],"attributes":[]},{"assembly":"UnityEngine.CoreModule","name":"zepetoPlayer","type":"UnityEngine.GameObject","isArray":false,"enumKeys":[],"enumValues":[],"attributes":[]},{"assembly":"mscorlib","name":"propIndex","type":"System.String","isArray":false,"enumKeys":[],"enumValues":[],"attributes":[]}],"name":"PropInteractionManager","description":""},"isCompiled":true}'
+  typescriptHash: 0e5b41cf1ce47099fda7d532a48736f3

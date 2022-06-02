@@ -66,6 +66,18 @@ export default class Starter extends ZepetoScriptBehaviour {
 
         });
 
+         // Prop Interaction
+         this.room.AddMessageHandler("attachProp", (message) => {
+        
+            this.str = "" + message;
+
+            this.AttachProp(this.str);
+
+            console.log(this.str);
+
+        });
+
+
     }
 
 
@@ -112,8 +124,48 @@ export default class Starter extends ZepetoScriptBehaviour {
         zepetoPlayer.character.transform.rotation = new UnityEngine.Quaternion(parseFloat(str.split("@@")[5]), parseFloat(str.split("@@")[6]), parseFloat(str.split("@@")[7]), parseFloat(str.split("@@")[8]));
 
         yield new UnityEngine.WaitForSeconds(0.2);
-
       
+    }
+
+
+
+
+    public interactionProp: UnityEngine.GameObject[];
+    private currentlyAttachedProp: string;
+    private propToAttach: UnityEngine.GameObject;
+    public AttachProp(str: string) {
+
+        if (str.split("@@")[1] != "undefined") {
+
+            const zepetoPlayer = ZepetoPlayers.instance.GetPlayer(str.split("@@")[0]);
+            console.log(str);
+
+            // 0 = guitar
+            if (str.split("@@")[1] == "0") {
+
+                if (ZepetoPlayers.instance.LocalPlayer.zepetoPlayer == zepetoPlayer) {
+
+                    this.currentlyAttachedProp = str.split("@@")[1];
+
+                }
+
+                this.propToAttach = UnityEngine.GameObject.Instantiate<UnityEngine.GameObject>(this.interactionProp[0]);
+
+                this.propToAttach.transform.parent = zepetoPlayer.character.transform.GetChild(0).GetChild(1).GetChild(2);
+
+                this.propToAttach.transform.localPosition = new UnityEngine.Vector3(-0.255, 0.019, -0.097);
+
+                console.log("pos set");
+
+                this.propToAttach.transform.localRotation = UnityEngine.Quaternion.Euler(new UnityEngine.Vector3(-86.264, 18.353, 79.142));
+
+                console.log("rot set");
+
+            }
+
+        }
+
+
     }
 
 
@@ -264,5 +316,12 @@ export default class Starter extends ZepetoScriptBehaviour {
 
         this.room.Send("onCancelGesture");
         console.log("sent");
+    }
+
+    public SendAttachPropMessage(message) {
+
+        this.room.Send("attachProp", message);
+        console.log(message.toString() + "sent");
+
     }
 }
