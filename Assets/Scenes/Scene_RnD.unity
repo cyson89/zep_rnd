@@ -559,6 +559,8 @@ MonoBehaviour:
     - zepetoPlayer
     - animationIndexToPlay
     - interactionPoint
+    - buttonJump
+    - canvasGroupHandle
     unityValues:
     - {fileID: 1869111935}
     - {fileID: 1673712365}
@@ -566,12 +568,16 @@ MonoBehaviour:
     - {fileID: 1513163398}
     - {fileID: 0}
     - {fileID: 2051282853}
+    - {fileID: 4820356909679182831}
+    - {fileID: 3997548296851308175}
     values:
     - 
     - 
     - 
     - 
     - '{"type":"System.String, mscorlib","value":"1"}'
+    - 
+    - 
     - 
     unityArrayValues: []
     arrayValues: []
@@ -1351,6 +1357,8 @@ MonoBehaviour:
     - zepetoPlayer
     - animationIndexToPlay
     - interactionPoint
+    - buttonJump
+    - canvasGroupHandle
     unityValues:
     - {fileID: 1869111935}
     - {fileID: 1673712365}
@@ -1358,12 +1366,16 @@ MonoBehaviour:
     - {fileID: 1513163398}
     - {fileID: 0}
     - {fileID: 780513405}
+    - {fileID: 4820356909679182831}
+    - {fileID: 3997548296851308175}
     values:
     - 
     - 
     - 
     - 
     - '{"type":"System.String, mscorlib","value":"1"}'
+    - 
+    - 
     - 
     unityArrayValues: []
     arrayValues: []
@@ -1637,6 +1649,8 @@ MonoBehaviour:
     - buttonInteraction
     - zepetoPlayer
     - interactionPoint
+    - buttonJump
+    - canvasGroupHandle
     unityValues:
     - {fileID: 0}
     - {fileID: 1869111935}
@@ -1644,8 +1658,12 @@ MonoBehaviour:
     - {fileID: 714021700}
     - {fileID: 1513163398}
     - {fileID: 2025921401}
+    - {fileID: 4820356909679182831}
+    - {fileID: 3997548296851308175}
     values:
     - '{"type":"System.String, mscorlib","value":"1"}'
+    - 
+    - 
     - 
     - 
     - 
@@ -2302,7 +2320,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8357443874439607713}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
@@ -2450,7 +2468,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3169524449315475336}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0

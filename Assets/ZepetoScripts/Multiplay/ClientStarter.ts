@@ -63,6 +63,25 @@ export default class Starter extends ZepetoScriptBehaviour {
 
         });
 
+        this.room.AddMessageHandler("onCancelGesture", (message) => {
+
+            this.str = "" + message;          
+           
+            this.CancelGesture(this.str);
+
+            console.log(this.str);
+
+        });
+
+    }
+
+
+    public CancelGesture(str: string) {
+
+        const zepetoPlayer = ZepetoPlayers.instance.GetPlayer(str.split("@@")[0]);
+
+        zepetoPlayer.character.CancelGesture();
+
     }
 
 
@@ -195,8 +214,11 @@ export default class Starter extends ZepetoScriptBehaviour {
         const zepetoPlayer = ZepetoPlayers.instance.GetPlayer(sessionId);
         zepetoPlayer.character.MoveToPosition(position);
 
-        if (player.state === CharacterState.JumpIdle || player.state === CharacterState.JumpMove)
-            zepetoPlayer.character.Jump();
+        if (player.state === CharacterState.JumpIdle || player.state === CharacterState.JumpMove){
+            zepetoPlayer.character.Jump();          
+        }
+            
+
     }
 
     private SendTransform(transform: UnityEngine.Transform) {
@@ -219,7 +241,7 @@ export default class Starter extends ZepetoScriptBehaviour {
     private SendState(state: CharacterState) {
         const data = new RoomData();
         data.Add("state", state);
-        this.room.Send("onChangedState", data.GetObject());
+        this.room.Send("onChangedState", data.GetObject());        
     }
 
     private ParseVector3(vector3: Vector3): UnityEngine.Vector3 {
@@ -243,5 +265,11 @@ export default class Starter extends ZepetoScriptBehaviour {
 
         this.room.Send("onSetGesture", message);
         console.log(message.toString() + "sent");
+    }
+
+    public SendCancelGestureMessage() {
+
+        this.room.Send("onCancelGesture");
+        console.log("sent");
     }
 }

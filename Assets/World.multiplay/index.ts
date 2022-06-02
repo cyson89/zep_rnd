@@ -60,6 +60,16 @@ export default class extends Sandbox {
 
         });
 
+        this.onMessage("onCancelGesture", (client, message) => {
+           
+            const str = client.sessionId + "@@" + message;
+
+            this.broadcast("onCancelGesture", str);
+
+            console.log(message);
+
+        });
+
 
     }
     

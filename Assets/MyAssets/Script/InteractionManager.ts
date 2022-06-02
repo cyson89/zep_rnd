@@ -1,5 +1,5 @@
-import { Camera, Canvas, Collider, GameObject, Vector3 } from 'UnityEngine';
-import { Button } from 'UnityEngine.UI';
+import { Camera, Canvas, CanvasGroup, Collider, GameObject, Vector3, WaitForEndOfFrame, WaitForSeconds } from 'UnityEngine';
+import { Button, Image } from 'UnityEngine.UI';
 import { ZepetoPlayers } from 'ZEPETO.Character.Controller';
 import { ZepetoScriptBehaviour } from 'ZEPETO.Script'
 import ClientStarter from '../../ZepetoScripts/Multiplay/ClientStarter';
@@ -19,6 +19,14 @@ export default class InteractionManager extends ZepetoScriptBehaviour {
     public animationIndexToPlay: string;
     private stringTransform: string;
     public interactionPoint: GameObject;
+
+    public buttonJump: Button;
+    public canvasGroupHandle: CanvasGroup;
+
+    private isInteracting: bool = false;
+
+
+
     
     Start() {    
 
@@ -28,9 +36,16 @@ export default class InteractionManager extends ZepetoScriptBehaviour {
 
         this.buttonInteraction.onClick.AddListener(() => {
            
-            this.buttonInteraction.gameObject.SetActive(false);
-            this.showButton = false;
 
+            for (let i = 0; i < this.transform.parent.childCount; ++i) {
+               
+                this.transform.parent.GetChild(i).GetComponent<InteractionManager>().ShowInteractionButton(false);
+               
+            }
+            
+
+       
+            //this.ShowInteractionButton(false);
 
             this.stringTransform = this.animationIndexToPlay + "@@"
             + this.interactionPoint.transform.position.x + "@@" + this.interactionPoint.transform.position.y + "@@" + this.interactionPoint.transform.position.z + "@@"
@@ -40,6 +55,56 @@ export default class InteractionManager extends ZepetoScriptBehaviour {
 
             this.StartCoroutine(this.DelayedSendSetGestureMessage());
         });
+
+        this.buttonJump.onClick.AddListener(()=>{
+
+            this.clientStarter.SendCancelGestureMessage();            
+            this.ShowInteractionButton(true);
+
+        });
+
+        this.StartCoroutine(this.WatchHandleAlpha());
+    }
+
+
+    public ShowInteractionButton(activate:bool){
+
+
+        if(activate){
+            this.buttonInteraction.gameObject.SetActive(true);
+            this.showButton = true;
+            this.isInteracting = false;            
+           
+        }else{
+                   
+            this.buttonInteraction.gameObject.SetActive(false);
+            this.showButton = false;
+            this.isInteracting = true;  
+
+        }
+
+    }
+
+    *WatchHandleAlpha(){
+
+        yield new WaitForSeconds(2);
+
+        while(true){
+            
+          if(this.isInteracting == true)
+          
+                if(this.canvasGroupHandle.alpha > 0.5){                
+                    this.clientStarter.SendCancelGestureMessage();                         
+
+                    this.ShowInteractionButton(true);
+                
+                }
+                
+                yield new WaitForSeconds(0.1);
+            
+                           
+        }
+        
     }
 
     *DelayedSendSetGestureMessage(){
@@ -72,16 +137,15 @@ export default class InteractionManager extends ZepetoScriptBehaviour {
     Update() {       
 
         // update screen space interaction button position
-        if (this.showButton) {           
-
+        if (this.showButton) {        
             this.viewportPosition = this.zepetoCamera.WorldToViewportPoint(this.gameObject.transform.position);
-
             this.buttonInteraction.transform.position = new Vector3(this.canvasInteraction.renderingDisplaySize.x * this.viewportPosition.x,
                 this.canvasInteraction.renderingDisplaySize.y * this.viewportPosition.y,
                 0);
-
         }      
 
+        
+       
     }
 
 }
