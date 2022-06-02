@@ -19,7 +19,46 @@ ScriptedImporter:
   WrapperFilters: []
   wrapperOutputDirectory: Generated
   compiledResult: '{"source":"\"use strict\";\r\nObject.defineProperty(exports, \"__esModule\",
-    { value: true });\r\nconst ZEPETO_Script_1 = require(\"ZEPETO.Script\");\r\nclass
-    UIManager extends ZEPETO_Script_1.ZepetoScriptBehaviour {\r\n    Start() {\r\n   
-    }\r\n}\r\nexports.default = UIManager;\r\n//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiVUlNYW5hZ2VyLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiVUlNYW5hZ2VyLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7O0FBQUEsaURBQXFEO0FBRXJELE1BQXFCLFNBQVUsU0FBUSxxQ0FBcUI7SUFFeEQsS0FBSztJQUVMLENBQUM7Q0FFSjtBQU5ELDRCQU1DIn0=","assetPath":"Assets/MyAssets/Script/UIManager.ts","manifest":{"properties":[],"name":"UIManager","description":""},"isCompiled":true}'
-  typescriptHash: a9146bc905c71480035f9079d0c1a5f1
+    { value: true });\r\nconst UnityEngine_1 = require(\"UnityEngine\");\r\nconst
+    ZEPETO_Script_1 = require(\"ZEPETO.Script\");\r\nclass UIManager extends ZEPETO_Script_1.ZepetoScriptBehaviour
+    {\r\n    Start() {\r\n    }\r\n    // type 1 : whole scale\r\n    // type 2 :
+    vertical\r\n    // type 3 : horizontal\r\n    *PopupUI(target, type) {\r\n       
+    if (!this.isUIExpanding) {\r\n            this.isUIExpanding = true;\r\n           
+    target.GetComponent($typeof(UnityEngine_1.RectTransform)).localScale = new UnityEngine_1.Vector3(0,
+    0, 0);\r\n            switch (type) {\r\n                case 1:\r\n                   
+    target.GetComponent($typeof(UnityEngine_1.RectTransform)).localScale = new UnityEngine_1.Vector3(0,
+    0, 0);\r\n                    target.SetActive(true);\r\n                   
+    while (target.GetComponent($typeof(UnityEngine_1.RectTransform)).localScale.x
+    < 0.99) {\r\n                        target.GetComponent($typeof(UnityEngine_1.RectTransform)).localScale
+    = UnityEngine_1.Vector3.Lerp(target.GetComponent($typeof(UnityEngine_1.RectTransform)).localScale,
+    new UnityEngine_1.Vector3(1, 1, 1), UnityEngine_1.Time.deltaTime * 8);\r\n                       
+    yield new UnityEngine_1.WaitForSeconds(UnityEngine_1.Time.deltaTime / 3);\r\n                   
+    }\r\n                    break;\r\n                case 2:\r\n                   
+    target.GetComponent($typeof(UnityEngine_1.RectTransform)).localScale = new UnityEngine_1.Vector3(1,
+    0, 0);\r\n                    target.SetActive(true);\r\n                   
+    while (target.GetComponent($typeof(UnityEngine_1.RectTransform)).localScale.y
+    < 0.99) {\r\n                        target.GetComponent($typeof(UnityEngine_1.RectTransform)).localScale
+    = UnityEngine_1.Vector3.Lerp(target.GetComponent($typeof(UnityEngine_1.RectTransform)).localScale,
+    new UnityEngine_1.Vector3(1, 1, 1), UnityEngine_1.Time.deltaTime * 8);\r\n                       
+    yield new UnityEngine_1.WaitForSeconds(UnityEngine_1.Time.deltaTime / 3);\r\n                   
+    }\r\n                    break;\r\n                case 3:\r\n                   
+    target.GetComponent($typeof(UnityEngine_1.RectTransform)).localScale = new UnityEngine_1.Vector3(0,
+    1, 0);\r\n                    target.SetActive(true);\r\n                   
+    while (target.GetComponent($typeof(UnityEngine_1.RectTransform)).localScale.x
+    < 0.99) {\r\n                        target.GetComponent($typeof(UnityEngine_1.RectTransform)).localScale
+    = UnityEngine_1.Vector3.Lerp(target.GetComponent($typeof(UnityEngine_1.RectTransform)).localScale,
+    new UnityEngine_1.Vector3(1, 1, 1), UnityEngine_1.Time.deltaTime * 8);\r\n                       
+    yield new UnityEngine_1.WaitForSeconds(UnityEngine_1.Time.deltaTime / 3);\r\n                   
+    }\r\n                    break;\r\n                default:\r\n            }\r\n           
+    console.log(\"Popup Animation END\");\r\n            this.isUIExpanding = false;\r\n       
+    }\r\n    }\r\n    *HideUI(target) {\r\n        if (!this.isUIReducing) {\r\n           
+    this.isUIReducing = true;\r\n            target.GetComponent($typeof(UnityEngine_1.RectTransform)).localScale
+    = new UnityEngine_1.Vector3(1, 1, 1);\r\n            while (target.GetComponent($typeof(UnityEngine_1.RectTransform)).localScale.x
+    > 0.01 && !this.isUIExpanding) {\r\n                target.GetComponent($typeof(UnityEngine_1.RectTransform)).localScale
+    = UnityEngine_1.Vector3.Lerp(target.GetComponent($typeof(UnityEngine_1.RectTransform)).localScale,
+    new UnityEngine_1.Vector3(0, 0, 0), UnityEngine_1.Time.deltaTime * 12);\r\n               
+    yield new UnityEngine_1.WaitForSeconds(UnityEngine_1.Time.deltaTime / 3);\r\n           
+    }\r\n            console.log(\"Hide Animation END\");\r\n            target.SetActive(false);\r\n           
+    this.isUIReducing = false;\r\n        }\r\n    }\r\n}\r\nexports.default = UIManager;\r\n//#
+    sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiVUlNYW5hZ2VyLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiVUlNYW5hZ2VyLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7O0FBQ0EsNkNBQXVGO0FBQ3ZGLGlEQUFxRDtBQUVyRCxNQUFxQixTQUFVLFNBQVEscUNBQXFCO0lBSXhELEtBQUs7SUFFTCxDQUFDO0lBR0QsdUJBQXVCO0lBQ3ZCLG9CQUFvQjtJQUNwQixzQkFBc0I7SUFDZixDQUFDLE9BQU8sQ0FBQyxNQUFrQixFQUFFLElBQVk7UUFFNUMsSUFBSSxDQUFDLElBQUksQ0FBQyxhQUFhLEVBQUU7WUFFckIsSUFBSSxDQUFDLGFBQWEsR0FBRyxJQUFJLENBQUM7WUFFMUIsTUFBTSxDQUFDLFlBQVksU0FBQywyQkFBYSxHQUFJLFVBQVUsR0FBRyxJQUFJLHFCQUFPLENBQUMsQ0FBQyxFQUFFLENBQUMsRUFBRSxDQUFDLENBQUMsQ0FBQTtZQUd0RSxRQUFRLElBQUksRUFBRTtnQkFFVixLQUFLLENBQUM7b0JBRUYsTUFBTSxDQUFDLFlBQVksU0FBQywyQkFBYSxHQUFJLFVBQVUsR0FBRyxJQUFJLHFCQUFPLENBQUMsQ0FBQyxFQUFFLENBQUMsRUFBRSxDQUFDLENBQUMsQ0FBQztvQkFDdkUsTUFBTSxDQUFDLFNBQVMsQ0FBQyxJQUFJLENBQUMsQ0FBQztvQkFFdkIsT0FBTyxNQUFNLENBQUMsWUFBWSxTQUFDLDJCQUFhLEdBQUksVUFBVSxDQUFDLENBQUMsR0FBRyxJQUFJLEVBQUU7d0JBRTdELE1BQU0sQ0FBQyxZQUFZLFNBQUMsMkJBQWEsR0FBSSxVQUFVLEdBQUcscUJBQU8sQ0FBQyxJQUFJLENBQUMsTUFBTSxDQUFDLFlBQVksU0FBQywyQkFBYSxHQUFJLFVBQVUsRUFBRSxJQUFJLHFCQUFPLENBQUMsQ0FBQyxFQUFFLENBQUMsRUFBRSxDQUFDLENBQUMsRUFBRSxrQkFBSSxDQUFDLFNBQVMsR0FBRyxDQUFDLENBQUMsQ0FBQzt3QkFFMUosTUFBTSxJQUFJLDRCQUFjLENBQUMsa0JB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","assetPath":"Assets/MyAssets/Script/UIManager.ts","manifest":{"properties":[],"name":"UIManager","description":""},"isCompiled":true}'
+  typescriptHash: 1a39c3c9857e4183e40633b0da5af8b8
