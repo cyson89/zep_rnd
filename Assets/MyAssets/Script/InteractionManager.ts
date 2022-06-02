@@ -15,6 +15,11 @@ export default class InteractionManager extends ZepetoScriptBehaviour {
     private zepetoCamera: Camera;
     public zepetoPlayer: GameObject;   
 
+
+    public animationIndexToPlay: string;
+    private stringTransform: string;
+    public interactionPoint: GameObject;
+    
     Start() {    
 
         this.zepetoCamera = this.zepetoPlayer.transform.GetChild(2).GetChild(0).GetChild(0).GetComponent<Camera>(); 
@@ -26,15 +31,30 @@ export default class InteractionManager extends ZepetoScriptBehaviour {
             this.buttonInteraction.gameObject.SetActive(false);
             this.showButton = false;
 
+
+            this.stringTransform = this.animationIndexToPlay + "@@"
+            + this.interactionPoint.transform.position.x + "@@" + this.interactionPoint.transform.position.y + "@@" + this.interactionPoint.transform.position.z + "@@"
+            + this.interactionPoint.transform.rotation.x.toString() + "@@" + this.interactionPoint.transform.rotation.y.toString() + "@@" + this.interactionPoint.transform.rotation.z.toString() + "@@" + this.interactionPoint.transform.rotation.w.toString() + "@@";
+
+            this.clientStarter.SendTeleportMessage(this.stringTransform);
+
+            this.StartCoroutine(this.DelayedSendSetGestureMessage());
         });
     }
+
+    *DelayedSendSetGestureMessage(){
+
+        this.clientStarter.SendSetGestureMessage("1");
+    }
+
 
     OnTriggerEnter(collider: Collider) {
 
         if (collider.name == ZepetoPlayers.instance.LocalPlayer.zepetoPlayer.character.name) {
       
                 this.buttonInteraction.gameObject.SetActive(true);
-                this.showButton = true;              
+                this.showButton = true;
+
 
         }
     }

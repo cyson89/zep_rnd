@@ -37,6 +37,30 @@ export default class extends Sandbox {
             const player = this.state.players.get(client.sessionId);
             player.state = message.state;
         });
+
+
+        this.onMessage("onTeleport", (client, message) => {
+           
+            const str = client.sessionId + "@@" + message;
+
+            this.broadcast("onTeleport", str);
+
+            console.log(message);
+
+        });
+
+
+        this.onMessage("onSetGesture", (client, message) => {
+           
+            const str = client.sessionId + "@@" + message;
+
+            this.broadcast("onSetGesture", str);
+
+            console.log(message);
+
+        });
+
+
     }
     
    

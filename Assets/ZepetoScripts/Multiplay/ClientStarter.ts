@@ -13,6 +13,13 @@ export default class Starter extends ZepetoScriptBehaviour {
     private room: Room;
     private currentPlayers: Map<string, Player> = new Map<string, Player>();
 
+
+    public isInteracting: bool;
+    public animationClip: UnityEngine.AnimationClip[];
+
+
+    
+
     private Start() {
 
         this.multiplay.RoomCreated += (room: Room) => {
@@ -24,7 +31,81 @@ export default class Starter extends ZepetoScriptBehaviour {
         };
 
         this.StartCoroutine(this.SendMessageLoop(0.1));
+
+
+        this.StartCoroutine(this.SetMessageHandlers());
+        
+
+
     }
+
+    private *SetMessageHandlers(){
+
+        yield new UnityEngine.WaitForSeconds(2);
+
+        this.room.AddMessageHandler("onTeleport", (message) => {
+
+            this.str = "" + message;          
+           
+            this.StartCoroutine(this.TryTeleport(this.str));
+
+            console.log(this.str);
+
+        });
+
+        this.room.AddMessageHandler("onSetGesture", (message) => {
+
+            this.str = "" + message;          
+           
+            this.SetGesture(this.str);
+
+            console.log(this.str);
+
+        });
+
+    }
+
+
+    private currentlyAppliedGestureAnimationClip: string;
+    public SetGesture(str: string) {
+
+        // value 100 means teleport without gesture
+        if (str.split("@@")[1] != "100" && str.split("@@")[1] != "undefined") {
+
+            const zepetoPlayer = ZepetoPlayers.instance.GetPlayer(str.split("@@")[0]);
+
+            if (ZepetoPlayers.instance.LocalPlayer.zepetoPlayer == zepetoPlayer) {
+
+                this.currentlyAppliedGestureAnimationClip = str.split("@@")[1];
+
+            }          
+
+            console.log(str.split("@@")[1]+"!!!!!!!!!!!!!!!!!!!");
+
+            zepetoPlayer.character.SetGesture(this.animationClip[parseInt(str.split("@@")[1])])
+
+        }
+       
+    }
+
+
+    private str: string;
+    *TryTeleport(str: string) {
+
+        yield new UnityEngine.WaitForSeconds(0.12);
+
+        const zepetoPlayer = ZepetoPlayers.instance.GetPlayer(str.split("@@")[0]);
+       
+        zepetoPlayer.character.transform.position = new UnityEngine.Vector3(parseFloat(str.split("@@")[2]), parseFloat(str.split("@@")[3]), parseFloat(str.split("@@")[4]));
+        zepetoPlayer.character.transform.rotation = new UnityEngine.Quaternion(parseFloat(str.split("@@")[5]), parseFloat(str.split("@@")[6]), parseFloat(str.split("@@")[7]), parseFloat(str.split("@@")[8]));
+
+        yield new UnityEngine.WaitForSeconds(0.2);
+
+      
+    }
+
+
+
 
     // 일정 Interval Time으로 내(local)캐릭터 transform을 server로 전송합니다.
     private* SendMessageLoop(tick: number) {
@@ -97,6 +178,7 @@ export default class Starter extends ZepetoScriptBehaviour {
 
         const isLocal = this.room.SessionId === player.sessionId;
         ZepetoPlayers.instance.CreatePlayerWithUserId(sessionId, player.zepetoUserId, spawnInfo, isLocal);
+        
     }
 
     private OnLeavePlayer(sessionId: string, player: Player) {
@@ -147,5 +229,19 @@ export default class Starter extends ZepetoScriptBehaviour {
             vector3.y,
             vector3.z
         );
+    }
+
+
+    public SendTeleportMessage(message) {
+
+        this.room.Send("onTeleport", message);
+        console.log(message.toString() + "sent");
+    }
+
+
+    public SendSetGestureMessage(message) {
+
+        this.room.Send("onSetGesture", message);
+        console.log(message.toString() + "sent");
     }
 }
