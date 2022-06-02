@@ -1,4 +1,4 @@
-import { Camera, Canvas, CanvasGroup, Collider, GameObject, Vector3, WaitForEndOfFrame, WaitForSeconds } from 'UnityEngine';
+import { Camera, Canvas, CanvasGroup, Collider, GameObject, SphereCollider, Vector3, WaitForEndOfFrame, WaitForSeconds } from 'UnityEngine';
 import { Button, Image } from 'UnityEngine.UI';
 import { ZepetoPlayers } from 'ZEPETO.Character.Controller';
 import { ZepetoScriptBehaviour } from 'ZEPETO.Script'
@@ -25,8 +25,6 @@ export default class InteractionManager extends ZepetoScriptBehaviour {
 
     private isInteracting: bool = false;
 
-
-
     
     Start() {    
 
@@ -34,82 +32,66 @@ export default class InteractionManager extends ZepetoScriptBehaviour {
 
         this.clientStarter = this.clientStarterGameObject.GetComponent<ClientStarter>();
 
-        this.buttonInteraction.onClick.AddListener(() => {
-           
+        this.StartCoroutine(this.WatchHandleAlpha());
+
+        this.buttonInteraction.onClick.AddListener(() => {           
 
             for (let i = 0; i < this.transform.parent.childCount; ++i) {
                
                 this.transform.parent.GetChild(i).GetComponent<InteractionManager>().ShowInteractionButton(false);
                
-            }
-            
-
-       
-            //this.ShowInteractionButton(false);
+            }           
 
             this.stringTransform = this.animationIndexToPlay + "@@"
             + this.interactionPoint.transform.position.x + "@@" + this.interactionPoint.transform.position.y + "@@" + this.interactionPoint.transform.position.z + "@@"
             + this.interactionPoint.transform.rotation.x.toString() + "@@" + this.interactionPoint.transform.rotation.y.toString() + "@@" + this.interactionPoint.transform.rotation.z.toString() + "@@" + this.interactionPoint.transform.rotation.w.toString() + "@@";
-
+          
             this.clientStarter.SendTeleportMessage(this.stringTransform);
 
             this.StartCoroutine(this.DelayedSendSetGestureMessage());
         });
 
-        this.buttonJump.onClick.AddListener(()=>{
+        this.buttonJump.onClick.AddListener(()=>{                   
 
             this.clientStarter.SendCancelGestureMessage();            
             this.ShowInteractionButton(true);
 
-        });
-
-        this.StartCoroutine(this.WatchHandleAlpha());
+        });        
     }
 
 
     public ShowInteractionButton(activate:bool){
 
-
-        if(activate){
-            this.buttonInteraction.gameObject.SetActive(true);
-            this.showButton = true;
-            this.isInteracting = false;            
-           
-        }else{
-                   
+        if(activate){                    
+            if(Vector3.Distance(ZepetoPlayers.instance.LocalPlayer.zepetoPlayer.character.transform.position, this.transform.position) < this.GetComponent<SphereCollider>().radius){
+                this.buttonInteraction.gameObject.SetActive(true);
+                this.showButton = true;
+            }           
+            this.isInteracting = false;                 
+        }else{                   
             this.buttonInteraction.gameObject.SetActive(false);
             this.showButton = false;
             this.isInteracting = true;  
-
         }
-
     }
 
     *WatchHandleAlpha(){
 
         yield new WaitForSeconds(2);
-
-        while(true){
-            
-          if(this.isInteracting == true)
-          
-                if(this.canvasGroupHandle.alpha > 0.5){                
-                    this.clientStarter.SendCancelGestureMessage();                         
-
-                    this.ShowInteractionButton(true);
-                
-                }
-                
+        while(true){            
+          if(this.isInteracting == true)          
+                if(this.canvasGroupHandle.alpha > 0.5){           
+                    this.clientStarter.SendCancelGestureMessage();                        
+                    this.ShowInteractionButton(true);                             
+                }                
                 yield new WaitForSeconds(0.1);
-            
-                           
-        }
-        
+        }        
     }
 
     *DelayedSendSetGestureMessage(){
 
-        this.clientStarter.SendSetGestureMessage("1");
+        this.clientStarter.SendSetGestureMessage(this.animationIndexToPlay);
+
     }
 
 
@@ -117,10 +99,11 @@ export default class InteractionManager extends ZepetoScriptBehaviour {
 
         if (collider.name == ZepetoPlayers.instance.LocalPlayer.zepetoPlayer.character.name) {
       
+            if(this.isInteracting != true){
+
                 this.buttonInteraction.gameObject.SetActive(true);
                 this.showButton = true;
-
-
+            }
         }
     }
 
@@ -128,9 +111,8 @@ export default class InteractionManager extends ZepetoScriptBehaviour {
 
         if (collider.name == ZepetoPlayers.instance.LocalPlayer.zepetoPlayer.character.name) {
 
-            this.buttonInteraction.gameObject.SetActive(false);
-            this.showButton = false;
-
+                this.buttonInteraction.gameObject.SetActive(false);
+                this.showButton = false;           
         }
     }
 
@@ -143,9 +125,5 @@ export default class InteractionManager extends ZepetoScriptBehaviour {
                 this.canvasInteraction.renderingDisplaySize.y * this.viewportPosition.y,
                 0);
         }      
-
-        
-       
     }
-
 }

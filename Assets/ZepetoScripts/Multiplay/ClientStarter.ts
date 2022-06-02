@@ -13,12 +13,7 @@ export default class Starter extends ZepetoScriptBehaviour {
     private room: Room;
     private currentPlayers: Map<string, Player> = new Map<string, Player>();
 
-
-    public isInteracting: bool;
     public animationClip: UnityEngine.AnimationClip[];
-
-
-    
 
     private Start() {
 
@@ -33,9 +28,7 @@ export default class Starter extends ZepetoScriptBehaviour {
         this.StartCoroutine(this.SendMessageLoop(0.1));
 
 
-        this.StartCoroutine(this.SetMessageHandlers());
-        
-
+        this.StartCoroutine(this.SetMessageHandlers());        
 
     }
 
