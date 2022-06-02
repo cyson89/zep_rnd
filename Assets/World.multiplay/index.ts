@@ -81,6 +81,29 @@ export default class extends Sandbox {
         });
 
 
+        this.onMessage("reportState", (client, message) => {
+            //const player = this.state.players.get(client.sessionId);
+
+            const str = client.sessionId + "@@" + message;
+
+            this.broadcast("reportState", str);            
+            
+            console.log(str + "::report");
+
+        });
+
+        this.onMessage("responseToReportState", (client, message) => {
+            //const player = this.state.players.get(client.sessionId);
+
+            const str = client.sessionId + "@@" + message;
+
+            this.broadcast("responseToReportState", str);
+
+            console.log(str + "::response to report");
+
+        });
+
+
     }
     
    

@@ -78,6 +78,51 @@ export default class Starter extends ZepetoScriptBehaviour {
         });
 
 
+         // Report State
+         this.room.AddMessageHandler("reportState", (message) => {
+
+         
+            this.ResponseReportStateMessage(this.currentlyAttachedProp + "@@" + this.currentlyAppliedGestureAnimationClip);
+
+            
+        });
+
+        this.room.AddMessageHandler("responseToReportState", (message) => {
+                    
+            this.str = "" + message;
+
+            this.SetReportedState(this.str);
+
+            console.log(this.str);
+
+        });
+
+        console.log("ClientStarter Delayed Start");
+
+
+        this.SendReportStateMessage("");
+
+        yield new UnityEngine.WaitForSeconds(1);
+
+        if (this.isFirst) {
+            this.isFirst = false;
+        }
+
+
+    }
+    private isFirst: bool = true;
+    public SetReportedState(str: string) {
+
+        if (this.isFirst) {
+        
+            const zepetoPlayer = ZepetoPlayers.instance.GetPlayer(str.split("@@")[0]);           
+
+            this.AttachProp(str.split("@@")[0] + "@@" + str.split("@@")[1]);
+
+            this.SetGesture(str.split("@@")[0] + "@@" + str.split("@@")[2]);
+            
+        }
+
     }
 
 
@@ -321,6 +366,21 @@ export default class Starter extends ZepetoScriptBehaviour {
     public SendAttachPropMessage(message) {
 
         this.room.Send("attachProp", message);
+        console.log(message.toString() + "sent");
+
+    }
+
+    // Report
+    public SendReportStateMessage(message) {
+
+        this.room.Send("reportState", message);
+        console.log(message.toString() + "sent");
+
+    }
+
+    public ResponseReportStateMessage(message) {
+
+        this.room.Send("responseToReportState", message);
         console.log(message.toString() + "sent");
 
     }
